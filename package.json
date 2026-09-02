@@ -1,0 +1,12 @@
+{
+  "name": "suutoken-runtime-releases",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "package:opencodex": "node scripts/package-opencodex.mjs",
+    "manifest:opencodex": "node scripts/create-manifest.mjs"
+  },
+  "dependencies": {
+    "archiver": "7.0.1"
+  }
+}

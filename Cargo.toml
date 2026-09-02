@@ -1,0 +1,10 @@
+[package]
+name = "suutoken-opencodex-launcher"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "opencodex"
+path = "launcher/src/main.rs"
+

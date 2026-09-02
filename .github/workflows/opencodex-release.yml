@@ -1,0 +1,110 @@
+name: Release OpenCodex runtime
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: OpenCodex npm version
+        required: true
+        default: 2.39.0
+      config_version:
+        description: Monotonically increasing configuration version
+        required: true
+        default: '1'
+      channel:
+        description: Release channel
+        required: true
+        type: choice
+        options: [stable, preview]
+
+permissions:
+  contents: write
+
+env:
+  SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX: ef560cb9430af5a82d4582643c866805fc67929d869e45edf6cba673981c68a7
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            platform: linux
+            arch: x86_64
+          - runner: windows-latest
+            platform: windows
+            arch: x86_64
+          - runner: macos-15-intel
+            platform: macos
+            arch: x86_64
+          - runner: macos-15
+            platform: macos
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: cargo build --release
+      - name: Package runtime
+        shell: bash
+        run: |
+          node scripts/package-opencodex.mjs \
+            '${{ inputs.version }}' \
+            '${{ matrix.platform }}' \
+            '${{ matrix.arch }}' \
+            'dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip'
+      - name: Create signed manifest
+        shell: bash
+        env:
+          SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
+        run: |
+          tag='opencodex-v${{ inputs.version }}-c${{ inputs.config_version }}'
+          node scripts/create-manifest.mjs \
+            'dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip' \
+            '${{ inputs.config_version }}' \
+            "$tag" \
+            'dist/${{ matrix.platform }}-${{ matrix.arch }}.json'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: opencodex-${{ matrix.platform }}-${{ matrix.arch }}
+          path: dist/*
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: opencodex-*
+          path: dist
+          merge-multiple: true
+      - name: Publish immutable GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag='opencodex-v${{ inputs.version }}-c${{ inputs.config_version }}'
+          gh release create "$tag" dist/* \
+            --title "OpenCodex ${{ inputs.version }} / config ${{ inputs.config_version }}" \
+            --notes "Signed SuuToken runtime artifacts."
+      - name: Update channel manifests
+        run: |
+          channel='${{ inputs.channel }}'
+          mkdir -p "channels/opencodex/$channel"
+          cp dist/linux-x86_64.json* "channels/opencodex/$channel/"
+          cp dist/windows-x86_64.json* "channels/opencodex/$channel/"
+          cp dist/macos-x86_64.json* "channels/opencodex/$channel/"
+          cp dist/macos-aarch64.json* "channels/opencodex/$channel/"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add channels
+          git commit -m "release: OpenCodex ${{ inputs.version }} config ${{ inputs.config_version }}"
+          git push
