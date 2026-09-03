@@ -4,13 +4,21 @@ import { chmod, cp, mkdir, mkdtemp, rm, stat, writeFile } from 'node:fs/promises
 import { tmpdir } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
+import { artifactName, assertArch, assertExactSemver, assertPlatform } from './release-args.mjs'
 
 const [version, platform, arch, outputArg] = process.argv.slice(2)
 if (!version || !platform || !arch || !outputArg) {
   throw new Error('usage: package-opencodex <version> <platform> <arch> <output.zip>')
 }
+assertExactSemver(version)
+assertPlatform(platform)
+assertArch(arch)
 
 const output = resolve(outputArg)
+const expectedName = artifactName(version, platform, arch)
+if (basename(output) !== expectedName) {
+  throw new Error(`output file must be named ${expectedName}`)
+}
 const work = await mkdtemp(join(tmpdir(), 'suutoken-opencodex-'))
 const root = join(work, 'package')
 const app = join(root, 'app')

@@ -1,20 +1,47 @@
 import { createHash, createPrivateKey, createPublicKey, sign } from 'node:crypto'
 import { readFile, writeFile } from 'node:fs/promises'
 import { basename, resolve } from 'node:path'
+import {
+  artifactName,
+  assertConfigVersion,
+  assertExactSemver,
+  parseArtifactName,
+} from './release-args.mjs'
 
 const [artifactArg, configVersionArg, releaseTag, outputArg] = process.argv.slice(2)
 const seedHex = process.env.SUUTOKEN_RUNTIME_SIGNING_KEY?.trim()
 const expectedPublicKey = process.env.SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX?.trim().toLowerCase()
-if (!artifactArg || !configVersionArg || !releaseTag || !outputArg || !seedHex || !expectedPublicKey) {
-  throw new Error('artifact, config version, release tag, output, signing key and public key are required')
+const expectedVersion = process.env.OPENCODEX_VERSION?.trim()
+if (!artifactArg || !configVersionArg || !releaseTag || !outputArg || !seedHex || !expectedPublicKey || !expectedVersion) {
+  throw new Error('artifact, config version, release tag, output, signing key, public key and OPENCODEX_VERSION are required')
 }
 if (!/^[0-9a-fA-F]{64}$/.test(seedHex)) throw new Error('signing key must be a 32-byte hex seed')
+assertExactSemver(expectedVersion)
+const configVersion = assertConfigVersion(configVersionArg)
+if (!/^opencodex-v\d+\.\d+\.\d+-c[1-9]\d*$/.test(releaseTag)) {
+  throw new Error(`release tag is invalid: ${JSON.stringify(releaseTag)}`)
+}
 
 const artifact = resolve(artifactArg)
+const fileName = basename(artifact)
+const parsed = parseArtifactName(fileName)
+if (parsed.version !== expectedVersion) {
+  throw new Error(`artifact version ${parsed.version} does not match OPENCODEX_VERSION ${expectedVersion}`)
+}
 const metadata = JSON.parse(await readFile(`${artifact}.metadata.json`, 'utf8'))
+if (
+  metadata.componentId !== 'opencodex'
+  || metadata.version !== parsed.version
+  || metadata.platform !== parsed.platform
+  || metadata.arch !== parsed.arch
+  || metadata.file !== fileName
+) {
+  throw new Error('artifact metadata does not match the expected file name and workflow version')
+}
+if (fileName !== artifactName(parsed.version, parsed.platform, parsed.arch)) {
+  throw new Error('artifact file name does not match version/platform/arch')
+}
 const bytes = await readFile(artifact)
-const configVersion = Number(configVersionArg)
-if (!Number.isSafeInteger(configVersion) || configVersion < 1) throw new Error('invalid config version')
 
 const manifest = {
   schemaVersion: 1,

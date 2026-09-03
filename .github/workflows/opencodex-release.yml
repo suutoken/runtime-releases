@@ -17,14 +17,15 @@ on:
         type: choice
         options: [stable, preview]
 
-permissions:
-  contents: write
-
+# Public key is not secret. The signing private key must never appear in this
+# workflow-level env or in package jobs; it is injected only in the sign job.
 env:
   SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX: 2ec5838862c48bdc3cbaa6ac74f208294a6a1920a003a56d0bbede162992f800
 
 jobs:
   package:
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -42,69 +43,140 @@ jobs:
             platform: macos
             arch: aarch64
     runs-on: ${{ matrix.runner }}
+    env:
+      OPENCODEX_VERSION: ${{ inputs.version }}
+      OPENCODEX_CONFIG_VERSION: ${{ inputs.config_version }}
+      OPENCODEX_PLATFORM: ${{ matrix.platform }}
+      OPENCODEX_ARCH: ${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Validate release inputs
+        shell: bash
+        run: node scripts/validate-release-inputs.mjs
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772
+        with:
+          toolchain: stable
       - run: npm ci
       - run: cargo build --release
-      - name: Package runtime
+      - name: Package unsigned runtime
         shell: bash
         run: |
+          set -euo pipefail
+          output="dist/opencodex-${OPENCODEX_VERSION}-${OPENCODEX_PLATFORM}-${OPENCODEX_ARCH}.zip"
           node scripts/package-opencodex.mjs \
-            '${{ inputs.version }}' \
-            '${{ matrix.platform }}' \
-            '${{ matrix.arch }}' \
-            'dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip'
-      - name: Create signed manifest
-        shell: bash
+            "$OPENCODEX_VERSION" \
+            "$OPENCODEX_PLATFORM" \
+            "$OPENCODEX_ARCH" \
+            "$output"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: unsigned-opencodex-${{ matrix.platform }}-${{ matrix.arch }}
+          if-no-files-found: error
+          path: |
+            dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip
+            dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip.metadata.json
+
+  sign:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      OPENCODEX_VERSION: ${{ inputs.version }}
+      OPENCODEX_CONFIG_VERSION: ${{ inputs.config_version }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Validate release inputs
+        run: node scripts/validate-release-inputs.mjs
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: unsigned-opencodex-*
+          path: dist
+          merge-multiple: true
+      - name: Sign manifests
         env:
           SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
         run: |
-          tag='opencodex-v${{ inputs.version }}-c${{ inputs.config_version }}'
-          node scripts/create-manifest.mjs \
-            'dist/opencodex-${{ inputs.version }}-${{ matrix.platform }}-${{ matrix.arch }}.zip' \
-            '${{ inputs.config_version }}' \
-            "$tag" \
-            'dist/${{ matrix.platform }}-${{ matrix.arch }}.json'
-      - uses: actions/upload-artifact@v4
+          set -euo pipefail
+          tag="opencodex-v${OPENCODEX_VERSION}-c${OPENCODEX_CONFIG_VERSION}"
+          prefix="opencodex-${OPENCODEX_VERSION}-"
+          shopt -s nullglob
+          zips=(dist/${prefix}*.zip)
+          if [ "${#zips[@]}" -eq 0 ]; then
+            echo "no unsigned zip artifacts" >&2
+            exit 1
+          fi
+          for zip in "${zips[@]}"; do
+            spec="$(basename "$zip" .zip)"
+            spec="${spec#"$prefix"}"
+            node scripts/create-manifest.mjs \
+              "$zip" \
+              "$OPENCODEX_CONFIG_VERSION" \
+              "$tag" \
+              "dist/${spec}.json"
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: opencodex-${{ matrix.platform }}-${{ matrix.arch }}
+          name: signed-opencodex
+          if-no-files-found: error
           path: dist/*
 
   publish:
-    needs: package
+    needs: sign
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      OPENCODEX_VERSION: ${{ inputs.version }}
+      OPENCODEX_CONFIG_VERSION: ${{ inputs.config_version }}
+      OPENCODEX_CHANNEL: ${{ inputs.channel }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          pattern: opencodex-*
+          node-version: 22
+      - name: Validate release inputs
+        run: node scripts/validate-release-inputs.mjs
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: signed-opencodex
           path: dist
-          merge-multiple: true
       - name: Publish immutable GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag='opencodex-v${{ inputs.version }}-c${{ inputs.config_version }}'
+          set -euo pipefail
+          tag="opencodex-v${OPENCODEX_VERSION}-c${OPENCODEX_CONFIG_VERSION}"
           gh release create "$tag" dist/* \
-            --title "OpenCodex ${{ inputs.version }} / config ${{ inputs.config_version }}" \
+            --title "OpenCodex ${OPENCODEX_VERSION} / config ${OPENCODEX_CONFIG_VERSION}" \
             --notes "Signed SuuToken runtime artifacts."
       - name: Update channel manifests
         run: |
-          channel='${{ inputs.channel }}'
-          mkdir -p "channels/opencodex/$channel"
-          cp dist/linux-x86_64.json* "channels/opencodex/$channel/"
-          cp dist/windows-x86_64.json* "channels/opencodex/$channel/"
-          cp dist/macos-x86_64.json* "channels/opencodex/$channel/"
-          cp dist/macos-aarch64.json* "channels/opencodex/$channel/"
+          set -euo pipefail
+          mkdir -p "channels/opencodex/${OPENCODEX_CHANNEL}"
+          copied=0
+          for manifest in dist/*.json; do
+            case "$manifest" in
+              *.metadata.json) continue ;;
+            esac
+            cp "$manifest" "$manifest.sig" "channels/opencodex/${OPENCODEX_CHANNEL}/"
+            copied=$((copied + 1))
+          done
+          if [ "$copied" -eq 0 ]; then
+            echo "no signed manifests" >&2
+            exit 1
+          fi
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add channels
-          git commit -m "release: OpenCodex ${{ inputs.version }} config ${{ inputs.config_version }}"
+          git commit -m "release: OpenCodex ${OPENCODEX_VERSION} config ${OPENCODEX_CONFIG_VERSION}"
           git push
