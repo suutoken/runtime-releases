@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "componentId": "opencodex",
+  "version": "2.39.0",
+  "minSuuTokenVersion": "0.1.0",
+  "platform": "linux",
+  "arch": "x86_64",
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c1/opencodex-2.39.0-linux-x86_64.zip",
+  "compressedSize": 135288415,
+  "uncompressedSize": 487287201,
+  "sha256": "49ecff6d322d35f5b11a5d6aee879ea049d84e49e907a7f60edeef0e8446ac91",
+  "configuration": {
+    "version": 1,
+    "managed": {
+      "hostname": "127.0.0.1",
+      "port": 10100,
+      "clientIntegrations": {
+        "codex": false,
+        "grok": false,
+        "claude-desktop": false
+      },
+      "codexAutoStart": false,
+      "codexShimAutoRestore": false,
+      "oauthOpenBrowser": false,
+      "claudeCode": {
+        "enabled": false
+      }
+    },
+    "defaults": {}
+  }
+}
