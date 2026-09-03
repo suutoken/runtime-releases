@@ -2,7 +2,7 @@ import archiver from 'archiver'
 import { createWriteStream } from 'node:fs'
 import { chmod, cp, lstat, mkdir, mkdtemp, readdir, realpath, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path'
+import { basename, dirname, join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { artifactName, assertArch, assertExactSemver, assertPlatform } from './release-args.mjs'
 
@@ -84,10 +84,6 @@ async function materializeSymlinks(dir, root) {
     const info = await lstat(full)
     if (info.isSymbolicLink()) {
       const target = await realpath(full)
-      const rel = relative(root, target)
-      if (isAbsolute(rel) || rel.startsWith('..')) {
-        throw new Error(`symlink escapes package: ${full}`)
-      }
       await rm(full)
       await cp(target, full, { recursive: true })
     } else if (info.isDirectory()) {
