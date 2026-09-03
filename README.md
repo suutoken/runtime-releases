@@ -37,6 +37,16 @@ Clients read manifests from:
 https://raw.githubusercontent.com/suutoken/runtime-releases/main/channels/opencodex/stable/<platform>-<arch>.json
 ```
 
+Signed fetch policy (redirect hosts and runtime origins) lives at:
+
+```text
+https://raw.githubusercontent.com/suutoken/runtime-releases/main/policy/stable.json
+```
+
+Desktop keeps only the bootstrap URL and public key compiled in. Changing CDN hosts or
+artifact origins is a signed policy update, not a desktop rebuild. Publish it with the
+manual **Publish fetch policy** workflow.
+
 ## Comments
 
 ### 2026-09-02 - Grok

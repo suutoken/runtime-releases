@@ -5,7 +5,7 @@
   "scripts": {
     "package:opencodex": "node scripts/package-opencodex.mjs",
     "manifest:opencodex": "node scripts/create-manifest.mjs",
-    "test": "node --test scripts/release-args.test.mjs scripts/create-manifest.test.mjs"
+    "test": "node --test scripts/release-args.test.mjs scripts/create-manifest.test.mjs scripts/sign-json.test.mjs"
   },
   "dependencies": {
     "archiver": "7.0.1"

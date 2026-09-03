@@ -1,0 +1,48 @@
+name: Publish fetch policy
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Release channel
+        required: true
+        type: choice
+        options: [stable, preview]
+        default: stable
+
+env:
+  SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX: 2ec5838862c48bdc3cbaa6ac74f208294a6a1920a003a56d0bbede162992f800
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Sign fetch policy
+        env:
+          SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
+          OPENCODEX_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          policy="policy/${OPENCODEX_CHANNEL}.json"
+          if [ ! -f "$policy" ]; then
+            echo "missing $policy" >&2
+            exit 1
+          fi
+          node scripts/sign-json.mjs "$policy"
+      - name: Publish signed policy
+        env:
+          OPENCODEX_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "policy/${OPENCODEX_CHANNEL}.json" "policy/${OPENCODEX_CHANNEL}.json.sig"
+          git diff --cached --quiet && exit 0
+          git commit -m "release: fetch policy ${OPENCODEX_CHANNEL}"
+          git push
