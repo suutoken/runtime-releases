@@ -2,10 +2,13 @@ export const PLATFORMS = ['linux', 'windows', 'macos']
 export const ARCHES = ['x86_64', 'aarch64']
 export const CHANNELS = ['stable', 'preview']
 
-const EXACT_SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d+)$/
+const NUMERIC = '(0|[1-9]\\d*)'
+const EXACT_SEMVER = new RegExp(`^${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}$`)
 const POSITIVE_INT = /^[1-9]\d*$/
 const MAX_CONFIG_VERSION = 4294967295
-const ARTIFACT = /^opencodex-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(linux|windows|macos)-(x86_64|aarch64)\.zip$/
+const ARTIFACT = new RegExp(
+  `^opencodex-${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}-(linux|windows|macos)-(x86_64|aarch64)\\.zip$`,
+)
 
 export function assertExactSemver(version) {
   if (typeof version !== 'string' || !EXACT_SEMVER.test(version)) {

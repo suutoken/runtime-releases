@@ -17,15 +17,24 @@ const here = dirname(fileURLToPath(import.meta.url))
 
 test('accepts an exact npm semver and positive config version', () => {
   assertExactSemver('2.39.0')
+  assertExactSemver('2.39.1')
+  assertExactSemver('2.39.9')
   assertExactSemver('0.1.0')
+  assertExactSemver('1.0.1')
   assert.equal(assertConfigVersion('1'), 1)
   assert.equal(assertConfigVersion('12'), 12)
   assert.equal(assertConfigVersion('4294967295'), 4294967295)
   assert.equal(artifactName('2.39.0', 'linux', 'x86_64'), 'opencodex-2.39.0-linux-x86_64.zip')
+  assert.equal(artifactName('2.39.1', 'linux', 'x86_64'), 'opencodex-2.39.1-linux-x86_64.zip')
   assert.deepEqual(parseArtifactName('opencodex-2.39.0-linux-x86_64.zip'), {
     version: '2.39.0',
     platform: 'linux',
     arch: 'x86_64',
+  })
+  assert.deepEqual(parseArtifactName('opencodex-2.39.1-macos-aarch64.zip'), {
+    version: '2.39.1',
+    platform: 'macos',
+    arch: 'aarch64',
   })
 })
 
