@@ -5,12 +5,12 @@
   "minSuuTokenVersion": "0.1.0",
   "platform": "macos",
   "arch": "aarch64",
-  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c1/opencodex-2.39.0-macos-aarch64.zip",
-  "compressedSize": 105695234,
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c2/opencodex-2.39.0-macos-aarch64.zip",
+  "compressedSize": 158411267,
   "uncompressedSize": 403979814,
-  "sha256": "2f03517903f1f9a508ed6c5552caf9fe784f7e00eea2650833ccdd3182a9f97c",
+  "sha256": "21a9b3ff1fd4a021a015ad0b9662ab0466d6aae23afdd83ddcc147ebbb52d7eb",
   "configuration": {
-    "version": 1,
+    "version": 2,
     "managed": {
       "hostname": "127.0.0.1",
       "port": 10100,

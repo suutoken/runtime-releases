@@ -5,12 +5,12 @@
   "minSuuTokenVersion": "0.1.0",
   "platform": "windows",
   "arch": "x86_64",
-  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c1/opencodex-2.39.0-windows-x86_64.zip",
-  "compressedSize": 131118938,
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c2/opencodex-2.39.0-windows-x86_64.zip",
+  "compressedSize": 131118940,
   "uncompressedSize": 302539636,
-  "sha256": "915c016e92524de47fc6639333d38e2b6b3507c3438d5be6a72b9cd11b85f97c",
+  "sha256": "5a3bbef638ddd812947fa42df4d0aa186dbe3cae566cb36951412bfbd64e774f",
   "configuration": {
-    "version": 1,
+    "version": 2,
     "managed": {
       "hostname": "127.0.0.1",
       "port": 10100,
