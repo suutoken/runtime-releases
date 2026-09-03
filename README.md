@@ -49,6 +49,11 @@ https://raw.githubusercontent.com/suutoken/runtime-releases/main/channels/openco
 `assertConfigVersion` now requires `Number.isSafeInteger` and `1..=4294967295` (`u32::MAX`).
 `4294967296` and oversized digit strings are rejected.
 
+Windows Job Object verification (suutoken, not this repo):
+https://github.com/hengproject/suutoken/actions/runs/33718858112
+`job_object_kill_on_close_releases_port_and_descendants` passed on `windows-latest`.
+Formal OpenCodex release was not triggered.
+
 Dispatch inputs are copied into `OPENCODEX_*` env vars and validated as an exact
 `MAJOR.MINOR.PATCH` plus a positive integer config version before `npm ci`, signing, or
 `gh release`. `node --test scripts/release-args.test.mjs scripts/create-manifest.test.mjs`
