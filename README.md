@@ -31,6 +31,13 @@ shell source) and re-validated by the package/sign scripts. `config_version` mus
 including for configuration-only releases. The publish job updates channel manifests only after
 every platform package, isolated signing, and the immutable GitHub Release have succeeded.
 
+## Codex and Grok Build
+
+Run **Release runtime** with `component=codex` or `component=grok`. Package jobs stay on
+`ubuntu-latest` and only download official upstream binaries (GitHub for Codex, npm platform
+packages for Grok Build). They never receive `SUUTOKEN_RUNTIME_SIGNING_KEY`. Users of SuuToken
+Desktop download SuuToken-signed ZIPs from this repository, not from OpenAI or xAI.
+
 Clients read manifests from:
 
 ```text

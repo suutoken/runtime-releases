@@ -18,7 +18,7 @@ if (!artifactArg || !configVersionArg || !releaseTag || !outputArg || !seedHex |
 if (!/^[0-9a-fA-F]{64}$/.test(seedHex)) throw new Error('signing key must be a 32-byte hex seed')
 assertExactSemver(expectedVersion)
 const configVersion = assertConfigVersion(configVersionArg)
-if (!/^opencodex-v\d+\.\d+\.\d+-c[1-9]\d*$/.test(releaseTag)) {
+if (!/^(opencodex|codex|grok)-v\d+\.\d+\.\d+-c[1-9]\d*$/.test(releaseTag)) {
   throw new Error(`release tag is invalid: ${JSON.stringify(releaseTag)}`)
 }
 
@@ -30,7 +30,7 @@ if (parsed.version !== expectedVersion) {
 }
 const metadata = JSON.parse(await readFile(`${artifact}.metadata.json`, 'utf8'))
 if (
-  metadata.componentId !== 'opencodex'
+  metadata.componentId !== parsed.component
   || metadata.version !== parsed.version
   || metadata.platform !== parsed.platform
   || metadata.arch !== parsed.arch
@@ -38,14 +38,14 @@ if (
 ) {
   throw new Error('artifact metadata does not match the expected file name and workflow version')
 }
-if (fileName !== artifactName(parsed.version, parsed.platform, parsed.arch)) {
+if (fileName !== artifactName(parsed.version, parsed.platform, parsed.arch, parsed.component)) {
   throw new Error('artifact file name does not match version/platform/arch')
 }
 const bytes = await readFile(artifact)
 
 const manifest = {
   schemaVersion: 1,
-  componentId: 'opencodex',
+  componentId: parsed.component,
   version: metadata.version,
   minSuuTokenVersion: '0.1.0',
   platform: metadata.platform,
@@ -54,19 +54,23 @@ const manifest = {
   compressedSize: metadata.compressedSize,
   uncompressedSize: metadata.uncompressedSize,
   sha256: createHash('sha256').update(bytes).digest('hex'),
-  configuration: {
-    version: configVersion,
-    managed: {
-      hostname: '127.0.0.1',
-      port: 10100,
-      clientIntegrations: { codex: false, grok: false, 'claude-desktop': false },
-      codexAutoStart: false,
-      codexShimAutoRestore: false,
-      oauthOpenBrowser: false,
-      claudeCode: { enabled: false },
-    },
-    defaults: {},
-  },
+  ...(parsed.component === 'opencodex'
+    ? {
+      configuration: {
+        version: configVersion,
+        managed: {
+          hostname: '127.0.0.1',
+          port: 10100,
+          clientIntegrations: { codex: false, grok: false, 'claude-desktop': false },
+          codexAutoStart: false,
+          codexShimAutoRestore: false,
+          oauthOpenBrowser: false,
+          claudeCode: { enabled: false },
+        },
+        defaults: {},
+      },
+    }
+    : {}),
 }
 
 const body = `${JSON.stringify(manifest, null, 2)}\n`

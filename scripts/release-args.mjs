@@ -6,8 +6,9 @@ const NUMERIC = '(0|[1-9]\\d*)'
 const EXACT_SEMVER = new RegExp(`^${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}$`)
 const POSITIVE_INT = /^[1-9]\d*$/
 const MAX_CONFIG_VERSION = 4294967295
+const COMPONENTS = ['opencodex', 'codex', 'grok']
 const ARTIFACT = new RegExp(
-  `^opencodex-${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}-(linux|windows|macos)-(x86_64|aarch64)\\.zip$`,
+  `^(opencodex|codex|grok)-${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}-(linux|windows|macos)-(x86_64|aarch64)\\.zip$`,
 )
 
 export function assertExactSemver(version) {
@@ -46,17 +47,24 @@ export function assertChannel(channel) {
   }
 }
 
-export function artifactName(version, platform, arch) {
+export function assertComponent(component) {
+  if (!COMPONENTS.includes(component)) {
+    throw new Error(`unsupported component ${JSON.stringify(component)}`)
+  }
+}
+
+export function artifactName(version, platform, arch, component = 'opencodex') {
   assertExactSemver(version)
   assertPlatform(platform)
   assertArch(arch)
-  return `opencodex-${version}-${platform}-${arch}.zip`
+  assertComponent(component)
+  return `${component}-${version}-${platform}-${arch}.zip`
 }
 
 export function parseArtifactName(file) {
   if (typeof file !== 'string' || !ARTIFACT.test(file)) {
     throw new Error(`artifact file name is invalid: ${JSON.stringify(file)}`)
   }
-  const [, major, minor, patch, platform, arch] = ARTIFACT.exec(file)
-  return { version: `${major}.${minor}.${patch}`, platform, arch }
+  const [, component, major, minor, patch, platform, arch] = ARTIFACT.exec(file)
+  return { component, version: `${major}.${minor}.${patch}`, platform, arch }
 }

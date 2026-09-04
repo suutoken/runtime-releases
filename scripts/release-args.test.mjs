@@ -27,14 +27,24 @@ test('accepts an exact npm semver and positive config version', () => {
   assert.equal(artifactName('2.39.0', 'linux', 'x86_64'), 'opencodex-2.39.0-linux-x86_64.zip')
   assert.equal(artifactName('2.39.1', 'linux', 'x86_64'), 'opencodex-2.39.1-linux-x86_64.zip')
   assert.deepEqual(parseArtifactName('opencodex-2.39.0-linux-x86_64.zip'), {
+    component: 'opencodex',
     version: '2.39.0',
     platform: 'linux',
     arch: 'x86_64',
   })
   assert.deepEqual(parseArtifactName('opencodex-2.39.1-macos-aarch64.zip'), {
+    component: 'opencodex',
     version: '2.39.1',
     platform: 'macos',
     arch: 'aarch64',
+  })
+  assert.equal(artifactName('0.153.2', 'linux', 'x86_64', 'codex'), 'codex-0.153.2-linux-x86_64.zip')
+  assert.equal(artifactName('1.0.13', 'windows', 'x86_64', 'grok'), 'grok-1.0.13-windows-x86_64.zip')
+  assert.deepEqual(parseArtifactName('codex-0.153.2-linux-x86_64.zip'), {
+    component: 'codex',
+    version: '0.153.2',
+    platform: 'linux',
+    arch: 'x86_64',
   })
 })
 

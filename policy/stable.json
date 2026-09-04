@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": 1,
+  "version": 2,
   "redirectHosts": [
     "github.com",
     "raw.githubusercontent.com",
@@ -14,12 +14,16 @@
       "artifactPrefix": "/suutoken/runtime-releases/releases/download/opencodex-"
     },
     "codex": {
-      "manifestPath": "/runtimes/codex/{channel}/{platform}-{arch}.json",
-      "artifactPrefix": "/runtimes/artifacts/codex/"
+      "manifestOrigin": "https://raw.githubusercontent.com",
+      "manifestPath": "/suutoken/runtime-releases/main/channels/codex/{channel}/{platform}-{arch}.json",
+      "artifactOrigin": "https://github.com",
+      "artifactPrefix": "/suutoken/runtime-releases/releases/download/codex-"
     },
     "grok": {
-      "manifestPath": "/runtimes/grok/{channel}/{platform}-{arch}.json",
-      "artifactPrefix": "/runtimes/artifacts/grok/"
+      "manifestOrigin": "https://raw.githubusercontent.com",
+      "manifestPath": "/suutoken/runtime-releases/main/channels/grok/{channel}/{platform}-{arch}.json",
+      "artifactOrigin": "https://github.com",
+      "artifactPrefix": "/suutoken/runtime-releases/releases/download/grok-"
     }
   }
 }
