@@ -23,18 +23,25 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
-      - name: Sign fetch policy
+      - name: Sign fetch policy and plugin catalog
         env:
           SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
           OPENCODEX_CHANNEL: ${{ inputs.channel }}
         run: |
           set -euo pipefail
           policy="policy/${OPENCODEX_CHANNEL}.json"
+          plugins="plugins/${OPENCODEX_CHANNEL}.json"
           if [ ! -f "$policy" ]; then
             echo "missing $policy" >&2
             exit 1
           fi
+          if [ ! -f "$plugins" ]; then
+            echo "missing $plugins" >&2
+            exit 1
+          fi
+          node scripts/validate-plugins.mjs "$plugins"
           node scripts/sign-json.mjs "$policy"
+          node scripts/sign-json.mjs "$plugins"
       - name: Publish signed policy
         env:
           OPENCODEX_CHANNEL: ${{ inputs.channel }}
@@ -42,7 +49,11 @@ jobs:
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add "policy/${OPENCODEX_CHANNEL}.json" "policy/${OPENCODEX_CHANNEL}.json.sig"
+          git add \
+            "policy/${OPENCODEX_CHANNEL}.json" \
+            "policy/${OPENCODEX_CHANNEL}.json.sig" \
+            "plugins/${OPENCODEX_CHANNEL}.json" \
+            "plugins/${OPENCODEX_CHANNEL}.json.sig"
           git diff --cached --quiet && exit 0
-          git commit -m "release: fetch policy ${OPENCODEX_CHANNEL}"
+          git commit -m "release: fetch policy and plugin catalog ${OPENCODEX_CHANNEL}"
           git push

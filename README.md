@@ -38,7 +38,15 @@ Run **Release runtime** with `component=codex` or `component=grok`. Package jobs
 packages for Grok Build). They never receive `SUUTOKEN_RUNTIME_SIGNING_KEY`. Users of SuuToken
 Desktop download SuuToken-signed ZIPs from this repository, not from OpenAI or xAI.
 
-Clients read manifests from:
+Plugin versions and setup URLs are configured in one signed catalog:
+
+```text
+https://raw.githubusercontent.com/suutoken/runtime-releases/main/plugins/stable.json
+```
+
+Change `setup` (download prefix) and each plugin `version` / `configVersion` there. Install, start, stop, isolation, and health checks stay in SuuToken Desktop. The catalog must not include commands or environment variables.
+
+Clients read per-platform hashes from:
 
 ```text
 https://raw.githubusercontent.com/suutoken/runtime-releases/main/channels/opencodex/stable/<platform>-<arch>.json

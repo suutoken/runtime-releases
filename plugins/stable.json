@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": 1,
+  "setup": "https://github.com/suutoken/runtime-releases/releases/download",
+  "artifact": "{id}-v{version}-c{configVersion}/{id}-{version}-{platform}-{arch}.zip",
+  "plugins": {
+    "opencodex": {
+      "version": "2.39.0",
+      "configVersion": 2
+    },
+    "codex": {
+      "version": "0.153.2",
+      "configVersion": 1
+    },
+    "grok": {
+      "version": "1.0.13",
+      "configVersion": 1
+    }
+  }
+}
