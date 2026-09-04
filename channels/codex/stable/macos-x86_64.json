@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentId": "codex",
+  "version": "0.153.2",
+  "minSuuTokenVersion": "0.1.0",
+  "platform": "macos",
+  "arch": "x86_64",
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-v0.153.2-c1/codex-0.153.2-macos-x86_64.zip",
+  "compressedSize": 96485169,
+  "uncompressedSize": 237396800,
+  "sha256": "a2072c362721705efcd5f09d7795f4794228d5119ea502534489e5211d6b8e02"
+}

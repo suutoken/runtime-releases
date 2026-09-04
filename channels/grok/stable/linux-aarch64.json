@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentId": "grok",
+  "version": "1.0.13",
+  "minSuuTokenVersion": "0.1.0",
+  "platform": "linux",
+  "arch": "aarch64",
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/grok-v1.0.13-c1/grok-1.0.13-linux-aarch64.zip",
+  "compressedSize": 61222564,
+  "uncompressedSize": 135641288,
+  "sha256": "8cef8dcc47dea7d0617f72ab326d75a582ef80abcd6e908701b87b8c81f702f8"
+}

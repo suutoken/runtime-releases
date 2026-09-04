@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentId": "codex",
+  "version": "0.153.2",
+  "minSuuTokenVersion": "0.1.0",
+  "platform": "linux",
+  "arch": "aarch64",
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-v0.153.2-c1/codex-0.153.2-linux-aarch64.zip",
+  "compressedSize": 93895306,
+  "uncompressedSize": 222567456,
+  "sha256": "23119f72461c5632065cde9cbdf804a2e10e6ff3310d0f1b89a59b9d414a7030"
+}

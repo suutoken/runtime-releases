@@ -179,4 +179,12 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add channels
           git commit -m "release: ${RUNTIME_COMPONENT} ${OPENCODEX_VERSION} config ${OPENCODEX_CONFIG_VERSION}"
-          git push
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            if git push; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          echo "failed to push channel manifests after retries" >&2
+          exit 1
