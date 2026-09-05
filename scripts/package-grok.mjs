@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process'
 import { brotliDecompressSync } from 'node:zlib'
 import archiver from 'archiver'
 import { artifactName, assertArch, assertExactSemver, assertPlatform } from './release-args.mjs'
+import { verifyGrokDownload } from './upstream-verify.mjs'
 
 const [version, platform, arch, outputArg] = process.argv.slice(2)
 if (!version || !platform || !arch || !outputArg) {
@@ -29,7 +30,13 @@ try {
   await mkdir(npmDir, { recursive: true })
   await mkdir(root, { recursive: true })
   const tarball = join(work, 'grok.tgz')
-  await download(`https://registry.npmjs.org/${npmName}/-/${basename(npmName)}-${version}.tgz`, tarball)
+  const url = `https://registry.npmjs.org/${npmName}/-/${basename(npmName)}-${version}.tgz`
+  const bytes = await download(url)
+  const lock = verifyGrokDownload(bytes, version, platform, arch)
+  if (lock.npm !== npmName || lock.tarball !== url) {
+    throw new Error(`Grok lock does not match ${platform}-${arch} tarball URL`)
+  }
+  await writeFile(tarball, bytes)
   run('tar', ['-xzf', tarball, '-C', npmDir])
   const br = join(npmDir, 'package', 'bin', platform === 'windows' ? 'grok.exe.br' : 'grok.br')
   const unpacked = join(root, platform === 'windows' ? 'grok.exe' : 'grok')
@@ -48,6 +55,10 @@ try {
     file: basename(output),
     compressedSize: (await stat(output)).size,
     uncompressedSize: (await stat(unpacked)).size,
+    upstreamNpm: lock.npm,
+    upstreamTarball: lock.tarball,
+    upstreamIntegrity: lock.integrity,
+    upstreamShasum: lock.shasum,
   }, null, 2))
 } finally {
   await rm(work, { recursive: true, force: true })
@@ -67,10 +78,10 @@ function grokNpmName(platform, arch) {
   return name
 }
 
-async function download(url, dest) {
+async function download(url) {
   const response = await fetch(url, { redirect: 'follow' })
   if (!response.ok) throw new Error(`download failed ${response.status} ${url}`)
-  await writeFile(dest, Buffer.from(await response.arrayBuffer()))
+  return Buffer.from(await response.arrayBuffer())
 }
 
 function run(command, args) {

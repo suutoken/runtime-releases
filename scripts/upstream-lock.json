@@ -1,0 +1,76 @@
+{
+  "codex": {
+    "0.153.2": {
+      "linux-x86_64": {
+        "asset": "codex-x86_64-unknown-linux-musl.tar.gz",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-unknown-linux-musl.tar.gz",
+        "sha256": "e8cd1160071f725d2a10cab81073dd6818fc8b096372125d27ef6e66fdf0979e"
+      },
+      "linux-aarch64": {
+        "asset": "codex-aarch64-unknown-linux-musl.tar.gz",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-unknown-linux-musl.tar.gz",
+        "sha256": "878693f9b370320ea21793f99ea1f5687b7d9aa1f2c733de693d9ec0baa4e62a"
+      },
+      "macos-x86_64": {
+        "asset": "codex-x86_64-apple-darwin.tar.gz",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-apple-darwin.tar.gz",
+        "sha256": "d84515df27b14255a1c4fe28827ba5975a095a514fe6755330e8dee5cc21ee7a"
+      },
+      "macos-aarch64": {
+        "asset": "codex-aarch64-apple-darwin.tar.gz",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-apple-darwin.tar.gz",
+        "sha256": "91dfc270f0dfbaec16d814f1aa90d4f27e74dc9e3784e64006bef3b79fe9e09c"
+      },
+      "windows-x86_64": {
+        "asset": "codex-x86_64-pc-windows-msvc.exe.zip",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-pc-windows-msvc.exe.zip",
+        "sha256": "19f52a4ad03725c097d9203d8c503aaab669264b55aa9355ce0feb60aa8d8459"
+      },
+      "windows-aarch64": {
+        "asset": "codex-aarch64-pc-windows-msvc.exe.zip",
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-pc-windows-msvc.exe.zip",
+        "sha256": "2f999b08b79355302d65a2d474f6373899b93e102b07a4a0544391735a05ca89"
+      }
+    }
+  },
+  "grok": {
+    "1.0.13": {
+      "linux-x86_64": {
+        "npm": "@xai-official/grok-linux-x64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-linux-x64/-/grok-linux-x64-1.0.13.tgz",
+        "integrity": "sha512-t0TpPmsEZwwS0utHq07L1oPX7tMgufAazIziccGn8IdTpo8ihqZ7KjaI6wikROXExfjvwTh83m4B0PL2ErPeiw==",
+        "shasum": "2b761311accd7f6280348a0604aa0e24246c0745"
+      },
+      "linux-aarch64": {
+        "npm": "@xai-official/grok-linux-arm64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-linux-arm64/-/grok-linux-arm64-1.0.13.tgz",
+        "integrity": "sha512-hUfACShilnR5am+KVFyigNYSmL3FEVcRnXBRNKX2xz5eQ68ZoUMLt9IxNtZn27vogYS8NxsWiFkEsGI1rPeQ0w==",
+        "shasum": "642a88e8139372582adef32641ff3671df76e1c2"
+      },
+      "windows-x86_64": {
+        "npm": "@xai-official/grok-win32-x64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-win32-x64/-/grok-win32-x64-1.0.13.tgz",
+        "integrity": "sha512-IAoQ+fDQVUzwzl1gYK+CMka2cH4yN5nbcsyodyvYTvkxSPixDIzzWeRtrOESOCPlft6YYpvFfdqisJppPOHekA==",
+        "shasum": "66a22b1545fec64fe3f2c817872b77a169b144d0"
+      },
+      "windows-aarch64": {
+        "npm": "@xai-official/grok-win32-arm64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-win32-arm64/-/grok-win32-arm64-1.0.13.tgz",
+        "integrity": "sha512-J+USAEgMyy7TaDRir2HvS1rj8yG8HjjtewK0qxz1dl2E7jjdqMjaKuN6H6l563ASvXwNDx17ye+1fkwwpjyKdg==",
+        "shasum": "05481c79f025bc7baa622fe754794d67f9d6b1c6"
+      },
+      "macos-x86_64": {
+        "npm": "@xai-official/grok-darwin-x64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-darwin-x64/-/grok-darwin-x64-1.0.13.tgz",
+        "integrity": "sha512-trI+fm4ZY/2skF05XLfCYCMQgk/NUj6jYVV1stL4jPafhYj41yDYxu0PHgLxEy6f8UtA8XCfZN084/KxgiYDKw==",
+        "shasum": "b9bebcc0b18b28a8b28efdd18d20d5c1a8287231"
+      },
+      "macos-aarch64": {
+        "npm": "@xai-official/grok-darwin-arm64",
+        "tarball": "https://registry.npmjs.org/@xai-official/grok-darwin-arm64/-/grok-darwin-arm64-1.0.13.tgz",
+        "integrity": "sha512-Nctnwkzj550E512RZ+n+IUuhqGPZ2L7z/ZTIlZdVn0KqZHfzC58vIZPMBzdcOkoK42IrJlLD6GS7Eo6c1y+VGw==",
+        "shasum": "1da22c03bd828189662ed0ebc22788669e74bdc3"
+      }
+    }
+  }
+}

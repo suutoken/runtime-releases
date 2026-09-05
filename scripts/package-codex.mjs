@@ -5,6 +5,7 @@ import { basename, dirname, join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import archiver from 'archiver'
 import { artifactName, assertArch, assertExactSemver, assertPlatform } from './release-args.mjs'
+import { verifyCodexDownload } from './upstream-verify.mjs'
 
 const [version, platform, arch, outputArg] = process.argv.slice(2)
 if (!version || !platform || !arch || !outputArg) {
@@ -26,7 +27,13 @@ const root = join(work, 'package')
 try {
   await mkdir(root, { recursive: true })
   const archive = join(work, asset)
-  await download(`https://github.com/openai/codex/releases/download/rust-v${version}/${asset}`, archive)
+  const url = `https://github.com/openai/codex/releases/download/rust-v${version}/${asset}`
+  const bytes = await download(url)
+  const lock = verifyCodexDownload(bytes, version, platform, arch)
+  if (lock.asset !== asset || lock.url !== url) {
+    throw new Error(`Codex lock does not match ${platform}-${arch} asset URL`)
+  }
+  await writeFile(archive, bytes)
   extractArchive(archive, work, platform)
   const binaryName = platform === 'windows' ? 'codex.exe' : 'codex'
   const found = findExtractedBinary(work, platform)
@@ -45,6 +52,9 @@ try {
     file: basename(output),
     compressedSize: (await stat(output)).size,
     uncompressedSize: (await stat(dest)).size,
+    upstreamUrl: lock.url,
+    upstreamAsset: lock.asset,
+    upstreamSha256: lock.sha256,
   }, null, 2))
 } finally {
   await rm(work, { recursive: true, force: true })
@@ -64,10 +74,10 @@ function codexAsset(version, platform, arch) {
   return `codex-${suffix}`
 }
 
-async function download(url, dest) {
+async function download(url) {
   const response = await fetch(url, { redirect: 'follow' })
   if (!response.ok) throw new Error(`download failed ${response.status} ${url}`)
-  await writeFile(dest, Buffer.from(await response.arrayBuffer()))
+  return Buffer.from(await response.arrayBuffer())
 }
 
 function extractArchive(archive, dest, platform) {
