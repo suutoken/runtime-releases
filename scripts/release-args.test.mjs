@@ -46,6 +46,16 @@ test('accepts an exact npm semver and positive config version', () => {
     platform: 'linux',
     arch: 'x86_64',
   })
+  assert.equal(
+    artifactName('1.10.0', 'linux', 'x86_64', 'codex-acp'),
+    'codex-acp-1.10.0-linux-x86_64.zip',
+  )
+  assert.deepEqual(parseArtifactName('codex-acp-1.10.0-linux-x86_64.zip'), {
+    component: 'codex-acp',
+    version: '1.10.0',
+    platform: 'linux',
+    arch: 'x86_64',
+  })
 })
 
 test('rejects quotes, command substitution, ranges and non-semver versions', () => {

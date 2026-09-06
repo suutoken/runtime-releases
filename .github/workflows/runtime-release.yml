@@ -7,7 +7,7 @@ on:
         description: Runtime component
         required: true
         type: choice
-        options: [codex, grok]
+        options: [codex, grok, codex-acp]
       version:
         description: Exact MAJOR.MINOR.PATCH version
         required: true

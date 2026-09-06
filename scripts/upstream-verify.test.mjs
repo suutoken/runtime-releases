@@ -2,21 +2,29 @@ import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { test } from 'node:test'
 import {
+  lookupCodexAcpLock,
   lookupCodexLock,
   lookupGrokLock,
   sha256Hex,
+  verifyCodexAcpDownload,
   verifyCodexDownload,
   verifyGrokDownload,
   verifyNpmIntegrity,
   verifySha256,
 } from './upstream-verify.mjs'
 
-test('committed lock retains researched Codex and Grok digests', () => {
+test('committed lock retains researched Codex, Grok, and Codex ACP digests', () => {
   const codex = lookupCodexLock('0.153.2', 'linux', 'x86_64')
   assert.equal(codex.asset, 'codex-x86_64-unknown-linux-musl.tar.gz')
   assert.equal(
     codex.sha256,
     'e8cd1160071f725d2a10cab81073dd6818fc8b096372125d27ef6e66fdf0979e',
+  )
+  const acp = lookupCodexAcpLock('1.10.0')
+  assert.equal(acp.npm, '@agentclientprotocol/codex-acp')
+  assert.equal(
+    acp.sha256,
+    '9dffb525b728d0579a8b19d48322281ecad7eea7ba1640fa2f8de1199346352c',
   )
   const grok = lookupGrokLock('1.0.13', 'linux', 'x86_64')
   assert.equal(grok.npm, '@xai-official/grok-linux-x64')
@@ -82,5 +90,13 @@ test('unknown version or platform is refused before packaging', () => {
   assert.throws(
     () => verifyGrokDownload(Buffer.from('x'), '9.9.9', 'linux', 'x86_64'),
     /no researched Grok digest/,
+  )
+  assert.throws(
+    () => lookupCodexAcpLock('0.0.0'),
+    /no researched Codex ACP digest/,
+  )
+  assert.throws(
+    () => verifyCodexAcpDownload(Buffer.from('x'), '9.9.9'),
+    /no researched Codex ACP digest/,
   )
 })

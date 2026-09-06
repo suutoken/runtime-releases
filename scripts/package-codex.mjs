@@ -5,7 +5,7 @@ import { basename, dirname, join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import archiver from 'archiver'
 import { artifactName, assertArch, assertExactSemver, assertPlatform } from './release-args.mjs'
-import { verifyCodexDownload } from './upstream-verify.mjs'
+import { verifyCodexDownload, verifySha256 } from './upstream-verify.mjs'
 
 const [version, platform, arch, outputArg] = process.argv.slice(2)
 if (!version || !platform || !arch || !outputArg) {
@@ -42,6 +42,19 @@ try {
   if (platform !== 'windows') {
     await chmod(dest, 0o755)
   }
+  const hostAsset = asset.replace(/^codex-/, 'codex-code-mode-host-')
+  const hostUrl = `https://github.com/openai/codex/releases/download/rust-v${version}/${hostAsset}`
+  const hostBytes = await download(hostUrl)
+  verifySha256(hostBytes, lock.codeModeHostSha256)
+  const hostArchive = join(work, hostAsset)
+  await writeFile(hostArchive, hostBytes)
+  const hostExtract = join(work, 'host')
+  await mkdir(hostExtract)
+  extractArchive(hostArchive, hostExtract, platform)
+  const hostName = platform === 'windows' ? 'codex-code-mode-host.exe' : 'codex-code-mode-host'
+  const hostDest = join(root, hostName)
+  run('cp', [join(hostExtract, hostAsset.replace(/\.(tar\.gz|zip)$/, '')), hostDest])
+  if (platform !== 'windows') await chmod(hostDest, 0o755)
   await mkdir(dirname(output), { recursive: true })
   await zipDirectory(root, output)
   await writeFile(`${output}.metadata.json`, JSON.stringify({
@@ -51,7 +64,8 @@ try {
     arch,
     file: basename(output),
     compressedSize: (await stat(output)).size,
-    uncompressedSize: (await stat(dest)).size,
+    uncompressedSize: (await stat(dest)).size + (await stat(hostDest)).size,
+    codeModeHost: { upstreamUrl: hostUrl, upstreamSha256: lock.codeModeHostSha256 },
     upstreamUrl: lock.url,
     upstreamAsset: lock.asset,
     upstreamSha256: lock.sha256,

@@ -48,6 +48,24 @@ export function lookupCodexLock(version, platform, arch) {
   return entry
 }
 
+export function lookupCodexAcpLock(version) {
+  const entry = loadUpstreamLock()['codex-acp']?.[version]
+  if (!entry?.integrity || !entry?.tarball || !entry?.npm || !entry?.sha256) {
+    throw new Error(`no researched Codex ACP digest for ${version}`)
+  }
+  return entry
+}
+
+export function verifyCodexAcpDownload(buffer, version) {
+  const lock = lookupCodexAcpLock(version)
+  verifySha256(buffer, lock.sha256)
+  verifyNpmIntegrity(buffer, lock.integrity)
+  if (lock.shasum) {
+    verifyNpmShasum(buffer, lock.shasum)
+  }
+  return lock
+}
+
 export function lookupGrokLock(version, platform, arch) {
   const entry = loadUpstreamLock().grok?.[version]?.[`${platform}-${arch}`]
   if (!entry?.integrity || !entry?.tarball || !entry?.npm) {

@@ -4,33 +4,48 @@
       "linux-x86_64": {
         "asset": "codex-x86_64-unknown-linux-musl.tar.gz",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-unknown-linux-musl.tar.gz",
-        "sha256": "e8cd1160071f725d2a10cab81073dd6818fc8b096372125d27ef6e66fdf0979e"
+        "sha256": "e8cd1160071f725d2a10cab81073dd6818fc8b096372125d27ef6e66fdf0979e",
+        "codeModeHostSha256": "177a4507b9cc7f97f113ac034697b39f6a71a876a8bd508ff6d7f52f342ebe4a"
       },
       "linux-aarch64": {
         "asset": "codex-aarch64-unknown-linux-musl.tar.gz",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-unknown-linux-musl.tar.gz",
-        "sha256": "878693f9b370320ea21793f99ea1f5687b7d9aa1f2c733de693d9ec0baa4e62a"
+        "sha256": "878693f9b370320ea21793f99ea1f5687b7d9aa1f2c733de693d9ec0baa4e62a",
+        "codeModeHostSha256": "70fe485e6919a038b75f70be71aa5782a19a5f36ee85597301e90bd1c9bcbf07"
       },
       "macos-x86_64": {
         "asset": "codex-x86_64-apple-darwin.tar.gz",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-apple-darwin.tar.gz",
-        "sha256": "d84515df27b14255a1c4fe28827ba5975a095a514fe6755330e8dee5cc21ee7a"
+        "sha256": "d84515df27b14255a1c4fe28827ba5975a095a514fe6755330e8dee5cc21ee7a",
+        "codeModeHostSha256": "e10587fd269ee445f7de00a7a77ea4c8a44ea9986562c0de2189c0b83f32f18b"
       },
       "macos-aarch64": {
         "asset": "codex-aarch64-apple-darwin.tar.gz",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-apple-darwin.tar.gz",
-        "sha256": "91dfc270f0dfbaec16d814f1aa90d4f27e74dc9e3784e64006bef3b79fe9e09c"
+        "sha256": "91dfc270f0dfbaec16d814f1aa90d4f27e74dc9e3784e64006bef3b79fe9e09c",
+        "codeModeHostSha256": "3471e54a6141fbcbe94cec87d14370353667d40f350ef16faa005ebc1854300b"
       },
       "windows-x86_64": {
         "asset": "codex-x86_64-pc-windows-msvc.exe.zip",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-x86_64-pc-windows-msvc.exe.zip",
-        "sha256": "19f52a4ad03725c097d9203d8c503aaab669264b55aa9355ce0feb60aa8d8459"
+        "sha256": "19f52a4ad03725c097d9203d8c503aaab669264b55aa9355ce0feb60aa8d8459",
+        "codeModeHostSha256": "c02e48999269614504658495aec049ae23a4403930bf40c663f812d5bae426a9"
       },
       "windows-aarch64": {
         "asset": "codex-aarch64-pc-windows-msvc.exe.zip",
         "url": "https://github.com/openai/codex/releases/download/rust-v0.153.2/codex-aarch64-pc-windows-msvc.exe.zip",
-        "sha256": "2f999b08b79355302d65a2d474f6373899b93e102b07a4a0544391735a05ca89"
+        "sha256": "2f999b08b79355302d65a2d474f6373899b93e102b07a4a0544391735a05ca89",
+        "codeModeHostSha256": "c4fbcf41a505e3056020ced5f22a05aad93c062719e134486b6ff033248095d8"
       }
+    }
+  },
+  "codex-acp": {
+    "1.10.0": {
+      "npm": "@agentclientprotocol/codex-acp",
+      "tarball": "https://registry.npmjs.org/@agentclientprotocol/codex-acp/-/codex-acp-1.10.0.tgz",
+      "integrity": "sha512-b4dDCPkH/GgHRb3JelXz4QdNirdoTjO3yYM1ImUJMxVXxgZLZMguEXNhZOH2G755UKzf6ZypiiC7UHe3fKgp2Q==",
+      "shasum": "f15c7eb8934fca634a5f0807e30f67d98a3d8436",
+      "sha256": "9dffb525b728d0579a8b19d48322281ecad7eea7ba1640fa2f8de1199346352c"
     }
   },
   "grok": {

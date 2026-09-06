@@ -18,7 +18,7 @@ if (!artifactArg || !configVersionArg || !releaseTag || !outputArg || !seedHex |
 if (!/^[0-9a-fA-F]{64}$/.test(seedHex)) throw new Error('signing key must be a 32-byte hex seed')
 assertExactSemver(expectedVersion)
 const configVersion = assertConfigVersion(configVersionArg)
-if (!/^(opencodex|codex|grok)-v\d+\.\d+\.\d+-c[1-9]\d*$/.test(releaseTag)) {
+if (!/^(opencodex|codex-acp|codex|grok)-v\d+\.\d+\.\d+-c[1-9]\d*$/.test(releaseTag)) {
   throw new Error(`release tag is invalid: ${JSON.stringify(releaseTag)}`)
 }
 

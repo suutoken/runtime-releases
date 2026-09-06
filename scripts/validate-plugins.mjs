@@ -5,7 +5,7 @@ import { assertComponent, assertConfigVersion, assertExactSemver } from './relea
 
 export const DEFAULT_ARTIFACT =
   '{id}-v{version}-c{configVersion}/{id}-{version}-{platform}-{arch}.zip'
-const COMPONENTS = ['opencodex', 'codex', 'grok']
+const COMPONENTS = ['opencodex', 'codex-acp', 'codex', 'grok']
 const PLACEHOLDERS = ['id', 'version', 'configVersion', 'platform', 'arch']
 
 export function validatePluginCatalog(parsed) {

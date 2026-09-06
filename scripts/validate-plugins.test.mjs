@@ -10,24 +10,36 @@ const catalog = JSON.parse(
   await readFile(join(here, '..', 'plugins', 'stable.json'), 'utf8'),
 )
 
-test('committed stable catalog is valid and points at current signed releases', () => {
-  validatePluginCatalog(catalog)
+test('live signed catalog still has three plugins until the operator re-signs', () => {
+  assert.deepEqual(Object.keys(catalog.plugins).sort(), ['codex', 'grok', 'opencodex'])
+  assert.throws(() => validatePluginCatalog(catalog), /exactly/)
+})
+
+test('four-plugin catalog including codex-acp is valid', () => {
+  const next = structuredClone(catalog)
+  next.plugins['codex-acp'] = { version: '1.10.0', configVersion: 1 }
+  validatePluginCatalog(next)
   assert.equal(
-    resolveArtifactUrl(catalog, 'codex', 'linux', 'x86_64'),
+    resolveArtifactUrl(next, 'codex', 'linux', 'x86_64'),
     'https://github.com/suutoken/runtime-releases/releases/download/codex-v0.153.2-c1/codex-0.153.2-linux-x86_64.zip',
   )
   assert.equal(
-    resolveArtifactUrl(catalog, 'grok', 'windows', 'x86_64'),
+    resolveArtifactUrl(next, 'grok', 'windows', 'x86_64'),
     'https://github.com/suutoken/runtime-releases/releases/download/grok-v1.0.13-c1/grok-1.0.13-windows-x86_64.zip',
   )
   assert.equal(
-    resolveArtifactUrl(catalog, 'opencodex', 'macos', 'aarch64'),
+    resolveArtifactUrl(next, 'opencodex', 'macos', 'aarch64'),
     'https://github.com/suutoken/runtime-releases/releases/download/opencodex-v2.39.0-c2/opencodex-2.39.0-macos-aarch64.zip',
+  )
+  assert.equal(
+    resolveArtifactUrl(next, 'codex-acp', 'linux', 'x86_64'),
+    'https://github.com/suutoken/runtime-releases/releases/download/codex-acp-v1.10.0-c1/codex-acp-1.10.0-linux-x86_64.zip',
   )
 })
 
 test('catalog rejects start commands and unknown plugin fields', () => {
   const invalid = structuredClone(catalog)
+  invalid.plugins['codex-acp'] = { version: '1.10.0', configVersion: 1 }
   invalid.plugins.codex.start = 'codex app-server'
   assert.throws(
     () => validatePluginCatalog(invalid),

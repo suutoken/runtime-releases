@@ -6,9 +6,9 @@ const NUMERIC = '(0|[1-9]\\d*)'
 const EXACT_SEMVER = new RegExp(`^${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}$`)
 const POSITIVE_INT = /^[1-9]\d*$/
 const MAX_CONFIG_VERSION = 4294967295
-const COMPONENTS = ['opencodex', 'codex', 'grok']
+const COMPONENTS = ['opencodex', 'codex-acp', 'codex', 'grok']
 const ARTIFACT = new RegExp(
-  `^(opencodex|codex|grok)-${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}-(linux|windows|macos)-(x86_64|aarch64)\\.zip$`,
+  `^(opencodex|codex-acp|codex|grok)-${NUMERIC}\\.${NUMERIC}\\.${NUMERIC}-(linux|windows|macos)-(x86_64|aarch64)\\.zip$`,
 )
 
 export function assertExactSemver(version) {
