@@ -54,12 +54,16 @@ try {
   // pull a second @openai/codex CLI. CODEX_PATH is the managed Codex binary.
   await cp(process.execPath, join(runtime, platform === 'windows' ? 'node.exe' : 'node'))
 
-  const launcherName = platform === 'windows' ? 'codex-acp.cmd' : 'codex-acp'
-  await writeFile(join(root, launcherName), launcherScript(platform))
-  if (platform !== 'windows') {
+  const launcherName = platform === 'windows' ? 'codex-acp.exe' : 'codex-acp'
+  if (platform === 'windows') {
+    await cp(join('target', 'release', launcherName), join(root, launcherName))
+  } else {
+    await writeFile(join(root, launcherName), launcherScript())
     await chmod(join(root, launcherName), 0o755)
     await chmod(join(runtime, 'node'), 0o755)
   }
+
+  run(join(root, launcherName), ['--version'])
 
   await materializeSymlinks(root)
 
@@ -85,13 +89,7 @@ try {
   await rm(work, { recursive: true, force: true })
 }
 
-function launcherScript(targetPlatform) {
-  if (targetPlatform === 'windows') {
-    return `@echo off\r
-set ROOT=%~dp0\r
-"%ROOT%runtime\\node.exe" "%ROOT%app\\node_modules\\@agentclientprotocol\\codex-acp\\dist\\index.js" %*\r
-`
-  }
+function launcherScript() {
   return `#!/bin/sh
 ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 exec "$ROOT/runtime/node" "$ROOT/app/node_modules/@agentclientprotocol/codex-acp/dist/index.js" "$@"
