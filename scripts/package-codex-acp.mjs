@@ -15,6 +15,11 @@ if (!version || !platform || !arch || !outputArg) {
 assertExactSemver(version)
 assertPlatform(platform)
 assertArch(arch)
+const hostPlatform = process.platform === 'darwin' ? 'macos' : process.platform === 'win32' ? 'windows' : process.platform
+const hostArch = process.arch === 'x64' ? 'x86_64' : process.arch === 'arm64' ? 'aarch64' : process.arch
+if (platform !== hostPlatform || arch !== hostArch) {
+  throw new Error(`ACP embeds the host Node executable; build ${platform}-${arch} on a matching runner`)
+}
 
 const output = resolve(outputArg)
 const expectedName = artifactName(version, platform, arch, 'codex-acp')

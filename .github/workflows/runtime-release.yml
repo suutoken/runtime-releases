@@ -35,15 +35,20 @@ jobs:
         include:
           - platform: linux
             arch: x86_64
+            runner: ubuntu-latest
           - platform: linux
             arch: aarch64
+            runner: ubuntu-24.04-arm
           - platform: windows
             arch: x86_64
+            runner: windows-latest
           - platform: macos
             arch: x86_64
+            runner: macos-15-intel
           - platform: macos
             arch: aarch64
-    runs-on: ubuntu-latest
+            runner: macos-15
+    runs-on: ${{ inputs.component == 'codex-acp' && matrix.runner || 'ubuntu-latest' }}
     env:
       OPENCODEX_VERSION: ${{ inputs.version }}
       OPENCODEX_CONFIG_VERSION: ${{ inputs.config_version }}
