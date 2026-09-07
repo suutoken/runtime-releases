@@ -13,9 +13,12 @@ if (!signature) throw new Error('updater signature is empty')
 const size = (await stat(artifact)).size
 if (size <= 0) throw new Error('updater artifact is empty')
 
+const notes = (process.env.DESKTOP_RELEASE_NOTES || '').trim()
+  || 'Portable stable launcher, retained versions and automatic interrupted-update recovery.'
+
 const document = {
   version,
-  notes: 'Portable stable launcher, retained versions and automatic interrupted-update recovery.',
+  notes,
   pub_date: new Date().toISOString(),
   platforms: {
     [target]: {
