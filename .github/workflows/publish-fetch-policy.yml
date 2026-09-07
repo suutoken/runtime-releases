@@ -9,6 +9,10 @@ on:
         type: choice
         options: [stable, preview]
         default: stable
+      enable_codex_acp:
+        description: Add published Codex ACP 1.10.0 to the signed catalog
+        type: boolean
+        default: false
 
 env:
   SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX: 2ec5838862c48bdc3cbaa6ac74f208294a6a1920a003a56d0bbede162992f800
@@ -23,6 +27,11 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
+      - name: Enable published Codex ACP
+        if: ${{ inputs.enable_codex_acp }}
+        env:
+          OPENCODEX_CHANNEL: ${{ inputs.channel }}
+        run: node scripts/enable-codex-acp.mjs "$OPENCODEX_CHANNEL"
       - name: Sign fetch policy and plugin catalog
         env:
           SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
