@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentId": "codex-acp",
+  "version": "1.10.0",
+  "minSuuTokenVersion": "0.1.0",
+  "platform": "macos",
+  "arch": "x86_64",
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-acp-v1.10.0-c1/codex-acp-1.10.0-macos-x86_64.zip",
+  "compressedSize": 39208960,
+  "uncompressedSize": 116731601,
+  "sha256": "1e889b4bba80aa611ac3bb9eb4022ce0cf854b2c842ac0aa9a6dff988212a86b"
+}
