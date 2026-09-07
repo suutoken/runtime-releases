@@ -1,12 +1,12 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "notes": "Portable stable launcher, retained versions and automatic interrupted-update recovery.",
-  "pub_date": "2026-09-07T08:19:15.775Z",
+  "pub_date": "2026-09-07T10:48:24.606Z",
   "platforms": {
     "windows-x86_64-portable": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SHZXU3gwaTg5SVRNMFdCRWdFclN5eWhPdjIwb3AzSEtBaWxKQmNNUmk3ZFdzZDRWdkRqZTgwd28yODZpayt6UE1Idk9RaWFQVVprcmZWekdFRUEyYXdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzY5MDExCWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCmpLRXdtR3NvSUszbCtXb0lUUXhLMUlxRFFWN1ZNTmhGd0FQY3ZoRVhlZlZ6cFhoek9sZ29KYUhYNWJuRVRRUVpUZFlyUEkydEpic2FRdWpVc2l2akFRPT0K",
-      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.1/SuuToken-portable-windows-x86_64.exe",
-      "size": 20325888
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SHByRnd6ZVpxZWdRZXdmZXhJNzczc0ZTY0pmd0RPSlVMY2tzUXpzamZpRjNPVXF0aUhKN2ZDcHB4akJXdU1ydWNmbVdnRlpnRlBvOThVcUdCK0Z5bGdZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4Nzc4MDE4CWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCmNGSjVCRDh0VDVuOERuMkM1dmtWMzJFWG1FZ1drRlZyRjRBZytBY1dORnkyWGdnY0NzTkNZSm1ZUkFaWndUcTZUZUFhKzdjaFp0YkVVOGVwOTA4RkNBPT0K",
+      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.2/SuuToken-portable-windows-x86_64.exe",
+      "size": 20347392
     }
   }
 }
