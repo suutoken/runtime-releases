@@ -5,8 +5,8 @@
   "minSuuTokenVersion": "0.1.0",
   "platform": "windows",
   "arch": "x86_64",
-  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-acp-v1.10.0-c1/codex-acp-1.10.0-windows-x86_64.zip",
-  "compressedSize": 34469724,
-  "uncompressedSize": 88288569,
-  "sha256": "ad504b83a0dba7f8e69ebfc481ad3b5ad7b2b061abb4b3b383b60823eba56915"
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-acp-v1.10.0-c2/codex-acp-1.10.0-windows-x86_64.zip",
+  "compressedSize": 34584262,
+  "uncompressedSize": 88523963,
+  "sha256": "4f438c526abd5422e57622e7cd5d48aec33ebd252b0a6cb6b3015c1a4cfeeecd"
 }
