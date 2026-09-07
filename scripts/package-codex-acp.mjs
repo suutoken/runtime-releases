@@ -45,7 +45,8 @@ try {
   await writeFile(tarball, bytes)
   const extract = join(work, 'npm')
   await mkdir(extract, { recursive: true })
-  run('tar', ['-xzf', tarball, '-C', extract])
+  const tar = platform === 'windows' ? join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'tar.exe') : 'tar'
+  run(tar, ['-xzf', tarball, '-C', extract])
   await cp(join(extract, 'package'), app, { recursive: true })
   const bundle = join(app, 'dist', 'index.js')
   await writeFile(bundle, includeHiddenModels(await readFile(bundle, 'utf8'), version))
