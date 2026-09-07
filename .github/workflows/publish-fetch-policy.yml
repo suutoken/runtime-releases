@@ -13,6 +13,10 @@ on:
         description: Add published Codex ACP 1.10.0 to the signed catalog
         type: boolean
         default: false
+      enable_codex_host:
+        description: Move signed Codex catalog to 0.153.2 config 2 (includes code-mode-host)
+        type: boolean
+        default: false
 
 env:
   SUUTOKEN_RUNTIME_PUBLIC_KEY_HEX: 2ec5838862c48bdc3cbaa6ac74f208294a6a1920a003a56d0bbede162992f800
@@ -32,6 +36,11 @@ jobs:
         env:
           OPENCODEX_CHANNEL: ${{ inputs.channel }}
         run: node scripts/enable-codex-acp.mjs "$OPENCODEX_CHANNEL"
+      - name: Enable Codex Code Mode host package
+        if: ${{ inputs.enable_codex_host }}
+        env:
+          OPENCODEX_CHANNEL: ${{ inputs.channel }}
+        run: node scripts/enable-codex-host.mjs "$OPENCODEX_CHANNEL"
       - name: Sign fetch policy and plugin catalog
         env:
           SUUTOKEN_RUNTIME_SIGNING_KEY: ${{ secrets.SUUTOKEN_RUNTIME_SIGNING_KEY }}
