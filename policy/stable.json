@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": 2,
+  "version": 3,
   "redirectHosts": [
     "github.com",
     "raw.githubusercontent.com",
@@ -24,6 +24,12 @@
       "manifestPath": "/suutoken/runtime-releases/main/channels/grok/{channel}/{platform}-{arch}.json",
       "artifactOrigin": "https://github.com",
       "artifactPrefix": "/suutoken/runtime-releases/releases/download/grok-"
+    },
+    "codex-acp": {
+      "manifestOrigin": "https://raw.githubusercontent.com",
+      "manifestPath": "/suutoken/runtime-releases/main/channels/codex-acp/{channel}/{platform}-{arch}.json",
+      "artifactOrigin": "https://github.com",
+      "artifactPrefix": "/suutoken/runtime-releases/releases/download/codex-acp-"
     }
   }
 }

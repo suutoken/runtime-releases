@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": 1,
+  "version": 2,
   "setup": "https://github.com/suutoken/runtime-releases/releases/download",
   "artifact": "{id}-v{version}-c{configVersion}/{id}-{version}-{platform}-{arch}.zip",
   "plugins": {
@@ -14,6 +14,10 @@
     },
     "grok": {
       "version": "1.0.13",
+      "configVersion": 1
+    },
+    "codex-acp": {
+      "version": "1.10.0",
       "configVersion": 1
     }
   }
