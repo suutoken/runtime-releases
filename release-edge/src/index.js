@@ -1,7 +1,6 @@
 const LATEST_PATH = '/desktop/stable/latest.json'
 const LATEST_SOURCE = 'https://raw.githubusercontent.com/suutoken/runtime-releases/main/desktop/stable/latest.json'
-const ARTIFACT = 'SuuToken-windows-x86_64-setup.exe'
-const ARTIFACT_PATH = /^\/desktop\/artifacts\/(\d+\.\d+\.\d+)\/SuuToken-windows-x86_64-setup\.exe$/
+const ARTIFACT_PATH = /^\/desktop\/artifacts\/(\d+\.\d+\.\d+)\/(SuuToken-windows-x86_64-setup\.exe|SuuToken-portable-windows-x86_64\.exe)$/
 
 export default {
   async fetch(request) {
@@ -19,7 +18,7 @@ export default {
     const match = ARTIFACT_PATH.exec(pathname)
     if (!match) return new Response('not found', { status: 404 })
     const upstream = await fetch(
-      `https://github.com/suutoken/runtime-releases/releases/download/desktop-v${match[1]}/${ARTIFACT}`,
+      `https://github.com/suutoken/runtime-releases/releases/download/desktop-v${match[1]}/${match[2]}`,
       { method: request.method, redirect: 'follow' },
     )
     if (!upstream.ok) return new Response('release artifact unavailable', { status: 502 })

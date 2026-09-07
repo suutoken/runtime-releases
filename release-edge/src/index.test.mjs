@@ -20,6 +20,10 @@ test('serves only the stable manifest and fixed versioned Windows artifact', asy
   assert.equal(artifact.status, 200)
   assert.match(requested[1], /releases\/download\/desktop-v0\.1\.1\/SuuToken-windows-x86_64-setup\.exe$/)
 
+  const portable = await worker.fetch(new Request('https://releases.suutoken.com/desktop/artifacts/0.1.1/SuuToken-portable-windows-x86_64.exe'))
+  assert.equal(portable.status, 200)
+  assert.match(requested[2], /releases\/download\/desktop-v0\.1\.1\/SuuToken-portable-windows-x86_64\.exe$/)
+
   assert.equal((await worker.fetch(new Request('https://releases.suutoken.com/anything'))).status, 404)
   assert.equal((await worker.fetch(new Request('https://releases.suutoken.com/desktop/artifacts/..%2Fsecret/SuuToken-windows-x86_64-setup.exe'))).status, 404)
   assert.equal((await worker.fetch(new Request('https://releases.suutoken.com/desktop/stable/latest.json', { method: 'POST' }))).status, 405)
