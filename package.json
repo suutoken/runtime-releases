@@ -8,7 +8,7 @@
     "package:grok": "node scripts/package-grok.mjs",
     "package:codex-acp": "node scripts/package-codex-acp.mjs",
     "manifest:opencodex": "node scripts/create-manifest.mjs",
-    "test": "node --test scripts/release-args.test.mjs scripts/create-manifest.test.mjs scripts/sign-json.test.mjs scripts/validate-plugins.test.mjs scripts/upstream-verify.test.mjs scripts/codex-acp-patch.test.mjs"
+    "test": "node --test scripts/release-args.test.mjs scripts/create-manifest.test.mjs scripts/sign-json.test.mjs scripts/validate-plugins.test.mjs scripts/upstream-verify.test.mjs scripts/codex-acp-patch.test.mjs release-edge/src/index.test.mjs"
   },
   "dependencies": {
     "archiver": "7.0.1"
