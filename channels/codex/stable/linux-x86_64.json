@@ -5,8 +5,8 @@
   "minSuuTokenVersion": "0.1.0",
   "platform": "linux",
   "arch": "x86_64",
-  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-v0.153.2-c1/codex-0.153.2-linux-x86_64.zip",
-  "compressedSize": 99951895,
-  "uncompressedSize": 258597984,
-  "sha256": "0a0ed6a05ceafe5f2581ccf86da41e97cc146e2aa5be474c64c95e7bd59e9789"
+  "artifactUrl": "https://github.com/suutoken/runtime-releases/releases/download/codex-v0.153.2-c2/codex-0.153.2-linux-x86_64.zip",
+  "compressedSize": 126339752,
+  "uncompressedSize": 328025248,
+  "sha256": "9996ded2d24a9f984f50e70b8dacb6ade7d1a75ad64f25c9c581bbaa230f5154"
 }
