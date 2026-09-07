@@ -10,9 +10,9 @@ const catalog = JSON.parse(
   await readFile(join(here, '..', 'plugins', 'stable.json'), 'utf8'),
 )
 
-test('live signed catalog still has three plugins until the operator re-signs', () => {
-  assert.deepEqual(Object.keys(catalog.plugins).sort(), ['codex', 'grok', 'opencodex'])
-  assert.throws(() => validatePluginCatalog(catalog), /exactly/)
+test('published signed catalog includes the Codex ACP adapter', () => {
+  assert.deepEqual(Object.keys(catalog.plugins).sort(), ['codex', 'codex-acp', 'grok', 'opencodex'])
+  validatePluginCatalog(catalog)
 })
 
 test('four-plugin catalog including codex-acp is valid', () => {
