@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": 2,
+  "version": 3,
   "setup": "https://github.com/suutoken/runtime-releases/releases/download",
   "artifact": "{id}-v{version}-c{configVersion}/{id}-{version}-{platform}-{arch}.zip",
   "plugins": {
@@ -18,7 +18,7 @@
     },
     "codex-acp": {
       "version": "1.10.0",
-      "configVersion": 1
+      "configVersion": 2
     }
   }
 }
