@@ -1,12 +1,12 @@
 {
-  "version": "0.1.7",
-  "notes": "Portable stable launcher, retained versions and automatic interrupted-update recovery.",
-  "pub_date": "2026-09-07T17:39:03.443Z",
+  "version": "0.1.9",
+  "notes": "SuuToken 0.1.9\n\n- ACP 对话不再因为一段时间没有新输出而超时失败。复杂任务会一直跑到模型结束或你点停止；只有进程断开才会丢掉会话。\n- 大约两分钟没有新输出时显示「仍在运行，暂时没有新输出」，可以继续等或手动停止。\n- 检查应用更新时，同时检查已安装的 Codex、Grok、OpenCodex 插件；有新版本会自动更新。进行中的对话会跳过，结束后下次扫描再更新。\n- Grok / Codex 的编辑类 tool call（`content.type = diff`）在对话里收成一行摘要（路径 +N −M）；Ask 模式下在输入框上方用审查卡看左右对比，Accept / Reject 确认。\n- 进程断开后对话回到 idle，队列暂停后可以继续重试，不会钉死在 blocked。\n- 应用更新失败时显示具体原因，并写入 `.suutoken/updates/install-error.log`。\n- 当前渠道没有本平台安装包时视为已是最新，不再报检查失败。\n- 从 0.1.5 / 0.1.6 / 0.1.7 升级也会带上此前的流式输出与代理超时改动。",
+  "pub_date": "2026-09-08T05:01:22.101Z",
   "platforms": {
     "windows-x86_64-portable": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SG9ZWkhNaFVwK1IzaDFSVWtzOVdraDNNaXFSOFEyOWZ1SXZSdUR4Q1pyck93aktDY2kvLzdmUVFwQytYWlVPRTVHU3NtbTRSdzc0SGZoYjMzMmVkUUFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4ODAyNTc1CWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCjAwTm51U3NWektoeW5SeE16YjB0dDdIL3ZBYmhQOWRRS1IvQXNJMFZ3T1hYSm5qbE01K200MWJIVWVVWC9iZ2VkOEJaZ0xiSWFqRUhMOGp1L045UkNRPT0K",
-      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.7/SuuToken-portable-windows-x86_64.exe",
-      "size": 20418048
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SGdMaFVvUndsbnNQbE5TdUxCbS92aCsvR3ExL3l6QTdhOUZIeEEzK1NCMGhoaWNWSkxRRzgwUm9IS3RWT3p0emxnTjdZTy9aN3RKY0Y5WjJVZ0VvSEFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4ODQzNjY4CWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCm1nSDVjYlBtL0VrYXVFSzVCWnYyNWF5Wnp1QnpYTVJpVE83enVCN29XZnovYUFtSHNXcHFoQ29aUWVnNldxTGJyd0Rvak5URys5aGdJTm1IbEFFMEF3PT0K",
+      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.9/SuuToken-portable-windows-x86_64.exe",
+      "size": 20433408
     }
   }
 }
