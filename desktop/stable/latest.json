@@ -1,12 +1,12 @@
 {
-  "version": "0.1.9",
-  "notes": "SuuToken 0.1.9\n\n- ACP 对话不再因为一段时间没有新输出而超时失败。复杂任务会一直跑到模型结束或你点停止；只有进程断开才会丢掉会话。\n- 大约两分钟没有新输出时显示「仍在运行，暂时没有新输出」，可以继续等或手动停止。\n- 检查应用更新时，同时检查已安装的 Codex、Grok、OpenCodex 插件；有新版本会自动更新。进行中的对话会跳过，结束后下次扫描再更新。\n- Grok / Codex 的编辑类 tool call（`content.type = diff`）在对话里收成一行摘要（路径 +N −M）；Ask 模式下在输入框上方用审查卡看左右对比，Accept / Reject 确认。\n- 进程断开后对话回到 idle，队列暂停后可以继续重试，不会钉死在 blocked。\n- 应用更新失败时显示具体原因，并写入 `.suutoken/updates/install-error.log`。\n- 当前渠道没有本平台安装包时视为已是最新，不再报检查失败。\n- 从 0.1.5 / 0.1.6 / 0.1.7 升级也会带上此前的流式输出与代理超时改动。",
-  "pub_date": "2026-09-08T05:01:22.101Z",
+  "version": "0.1.10",
+  "notes": "SuuToken 0.1.10\n\n- 修复新对话发送失败（`acp stdio failed`）：Grok 模型列表探测不再占用聊天连接；断线后会重新初始化会话再重试一次。\n- 退出应用时会停止 Grok leader、Codex 和 ACP 连接，避免下次打开被 `leader.sock` 卡住、提示 runtime did not become ready。\n- Windows 上会按进程镜像识别并清理本应用的 Grok/Codex 残留进程，不再误杀无关 PID。\n- 关闭窗口时标题栏整条都可拖动；对话附件显示为文件卡片，图片可预览，点击用系统默认方式打开链接和文件。\n- 未选择权限就点停止时，对话会立刻回到可发送状态，不再卡在 blocked。\n- 修复 Grok 引导（闪电 / Ctrl+Enter）：改为发送 Grok 的 `x.ai/queue/interject`，不再调用不存在的 `_x.ai/interject`。\n- 新对话默认使用 Grok 4.6；回复旁的定位条预览横向显示，不再竖排。",
+  "pub_date": "2026-09-08T14:43:48.250Z",
   "platforms": {
     "windows-x86_64-portable": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SGdMaFVvUndsbnNQbE5TdUxCbS92aCsvR3ExL3l6QTdhOUZIeEEzK1NCMGhoaWNWSkxRRzgwUm9IS3RWT3p0emxnTjdZTy9aN3RKY0Y5WjJVZ0VvSEFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4ODQzNjY4CWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCm1nSDVjYlBtL0VrYXVFSzVCWnYyNWF5Wnp1QnpYTVJpVE83enVCN29XZnovYUFtSHNXcHFoQ29aUWVnNldxTGJyd0Rvak5URys5aGdJTm1IbEFFMEF3PT0K",
-      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.9/SuuToken-portable-windows-x86_64.exe",
-      "size": 20433408
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSenlZTmhIaFM4SGljWUQ0aytLeVg5WmhsYWNXK0ZCUncrM2RsWTFmcFFoWHUxRWJmUi8veGl3bEc2ZEkwT0lnUTNFMmQrZmRVclNuVjNNZ05MdUZLdjF2YUFBdFJQeHcwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4ODc4NjEzCWZpbGU6U3V1VG9rZW4tcG9ydGFibGUtd2luZG93cy14ODZfNjQuZXhlCnM3aFJKR3gzeEZtUVlDSmRqSzlmcThWUzE2eXBLWkYwR3YxOWJZbGJYV1FFdDBnRmNiNGxBcHVZUFcyUWhPaTdRYmtFK1NyQ2IwWVNDM1NJczhVekFRPT0K",
+      "url": "https://releases.suutoken.com/desktop/artifacts/0.1.10/SuuToken-portable-windows-x86_64.exe",
+      "size": 20605440
     }
   }
 }
